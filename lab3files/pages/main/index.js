@@ -28,7 +28,7 @@ export class MainPage {
         return `
             <div id="main-page" class="container">
                 <!-- Заголовок -->
-                <h1 class="text-center my-4">Учебный портал МГТУ</h1>
+                <h1 class="text-center my-4">Учебный портал МГТУ им Н.Э. Баумана</h1>
                 
                 <!-- Карточки меню -->
                 <div class="row mb-5" id="cards-container"></div>
