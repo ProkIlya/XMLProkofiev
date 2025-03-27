@@ -121,18 +121,32 @@ export class SessionResultsPage {
     renderSemesterFilter() {
         const filterContainer = document.getElementById('semester-filter');
         filterContainer.innerHTML = `
-            <div class="btn-group w-100">
-                <button class="btn btn-outline-primary" id="semester-all">Показать все</button>
-                <button class="btn btn-outline-primary" id="semester-1">Семестр 1</button>
-                <button class="btn btn-outline-primary" id="semester-2">Семестр 2</button>
-                <button class="btn btn-outline-primary" id="semester-3">Семестр 3</button>
+            <div class="dropdown mb-4">
+                <button class="btn btn-primary dropdown-toggle" type="button" 
+                        id="semesterDropdown" data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                    ${this.currentSemester ? `Семестр ${this.currentSemester.replace('semester', '')}` : 'Все семестры'}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="semesterDropdown">
+                    <li><a class="dropdown-item" href="#" data-semester="null">Все семестры</a></li>
+                    <li><a class="dropdown-item" href="#" data-semester="semester1">Семестр 1</a></li>
+                    <li><a class="dropdown-item" href="#" data-semester="semester2">Семестр 2</a></li>
+                    <li><a class="dropdown-item" href="#" data-semester="semester3">Семестр 3</a></li>
+                </ul>
             </div>
         `;
-
-        document.getElementById('semester-all').addEventListener('click', () => this.filterBySemester(null));
-        document.getElementById('semester-1').addEventListener('click', () => this.filterBySemester('semester1'));
-        document.getElementById('semester-2').addEventListener('click', () => this.filterBySemester('semester2'));
-        document.getElementById('semester-3').addEventListener('click', () => this.filterBySemester('semester3'));
+    
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const semester = e.target.dataset.semester === 'null' ? null : e.target.dataset.semester;
+                this.filterBySemester(semester);
+                
+                // Обновляем текст на кнопке
+                document.getElementById('semesterDropdown').textContent = 
+                    semester ? `Семестр ${semester.replace('semester', '')}` : 'Все семестры';
+            });
+        });
     }
 
     renderStatistics() {
@@ -198,11 +212,11 @@ export class SessionResultsPage {
         this.parent.innerHTML = '';
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
-
+    
         const backButton = new BackButtonComponent(this.pageRoot);
         backButton.render(this.clickBack.bind(this));
-
-        this.renderSemesterFilter();
+    
+        this.renderSemesterFilter(); 
         this.renderStatistics();
         this.renderResults();
     }

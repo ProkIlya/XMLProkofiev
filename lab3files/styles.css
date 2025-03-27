@@ -38,6 +38,19 @@ header {
     width: 100%;
 }
 
+#semesterDropdown {
+    width: 200px;
+    text-align: left;
+    padding-right: 30px;
+    position: relative;
+}
+
+#semesterDropdown::after {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 #palindrome-input {
     max-width: 300px;
 }
@@ -54,4 +67,21 @@ header {
 
 .text-danger {
     color: #dc3545 !important;
+}
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+#cards-container {
+    margin-bottom: 30px;
+}
+
+.alert {
+    margin-top: 15px;
+    white-space: pre-wrap;
 }
