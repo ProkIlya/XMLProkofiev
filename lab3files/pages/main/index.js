@@ -51,7 +51,7 @@ export class MainPage {
             {
                 id: "functions-demo",
                 title: "Демонстрация функций",
-                text: "Примеры работы функций"
+                text: "Примеры работы \функций"
             }
         ];
     }
