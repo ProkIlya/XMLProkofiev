@@ -6,8 +6,10 @@ import { sumUnique } from "../../utils/functions.js";
 export class SessionResultsPage {
     constructor(parent) {
         this.parent = parent;
-        this.currentSemester = null; // Текущий выбранный семестр (null - все)
+        this.currentSemester = null;
         this.semestersData = this.getSemestersData();
+        this.currentData = [];
+        this.domElements = {}; // Для кэширования DOM-элементов
     }
 
     getSemestersData() {
@@ -96,6 +98,7 @@ export class SessionResultsPage {
             <div id="session-results-page">
                 <h2 class="my-4">Результаты сессий</h2>
                 <div class="mb-4" id="semester-filter"></div>
+                <div id="session-controls"></div>
                 <div id="semester-stats" class="mb-4"></div>
                 <div id="semester-results"></div>
             </div>
@@ -141,8 +144,6 @@ export class SessionResultsPage {
                 e.preventDefault();
                 const semester = e.target.dataset.semester === 'null' ? null : e.target.dataset.semester;
                 this.filterBySemester(semester);
-                
-                // Обновляем текст на кнопке
                 document.getElementById('semesterDropdown').textContent = 
                     semester ? `Семестр ${semester.replace('semester', '')}` : 'Все семестры';
             });
@@ -152,7 +153,6 @@ export class SessionResultsPage {
     renderStatistics() {
         const statsContainer = document.getElementById('semester-stats');
         
-        // Рассчитываем статистику для каждого семестра
         const semesterStats = {};
         let allGrades = [];
         
@@ -162,7 +162,6 @@ export class SessionResultsPage {
             allGrades = [...allGrades, ...grades];
         });
         
-        // Общий средний балл
         const overallAvg = this.calculateAverage(allGrades);
         
         statsContainer.innerHTML = `
@@ -178,31 +177,84 @@ export class SessionResultsPage {
         `;
     }
 
+    renderControls() {
+        const controlsContainer = document.getElementById('session-controls');
+        controlsContainer.innerHTML = `
+            <div class="mb-3 d-flex gap-2">
+                <button class="btn btn-danger" id="remove-card-btn">
+                    Удалить последнюю карточку
+                </button>
+                <button class="btn btn-success" id="copy-card-btn">
+                    Добавить копию первой карточки
+                </button>
+            </div>
+        `;
+
+        document.getElementById('remove-card-btn').addEventListener('click', () => {
+            if (this.currentData.length === 0) return;
+            
+            const lastItem = this.currentData[this.currentData.length - 1];
+            
+            // Удаляем из исходных данных
+            if (this.currentSemester) {
+                const index = this.semestersData[this.currentSemester].findIndex(item => 
+                    item.discipline === lastItem.discipline && item.date === lastItem.date
+                );
+                if (index !== -1) {
+                    this.semestersData[this.currentSemester].splice(index, 1);
+                }
+            } else {
+                Object.keys(this.semestersData).forEach(semester => {
+                    const index = this.semestersData[semester].findIndex(item => 
+                        item.discipline === lastItem.discipline && item.date === lastItem.date
+                    );
+                    if (index !== -1) {
+                        this.semestersData[semester].splice(index, 1);
+                    }
+                });
+            }
+            
+            this.renderResults();
+            this.renderStatistics(); // Обновляем статистику
+        });
+
+        document.getElementById('copy-card-btn').addEventListener('click', () => {
+            if (this.currentData.length === 0) return;
+            
+            const firstItem = {...this.currentData[0]};
+            firstItem.date = new Date().toISOString().split('T')[0];
+            
+            // Добавляем в исходные данные
+            if (this.currentSemester) {
+                this.semestersData[this.currentSemester].push(firstItem);
+            } else {
+                this.semestersData.semester1.push(firstItem);
+            }
+            
+            this.renderResults();
+            this.renderStatistics(); // Обновляем статистику
+        });
+    }
+
     renderResults() {
         const resultsContainer = document.getElementById('semester-results');
         resultsContainer.innerHTML = '';
         
-        let dataToShow = [];
+        // Обновляем currentData
         if (this.currentSemester) {
-            dataToShow = this.semestersData[this.currentSemester];
+            this.currentData = [...this.semestersData[this.currentSemester]];
         } else {
-            // Показываем все данные, объединяя семестры
+            this.currentData = [];
             Object.values(this.semestersData).forEach(semesterData => {
-                dataToShow = [...dataToShow, ...semesterData];
+                this.currentData.push(...semesterData);
             });
         }
-        
+
         // Сортируем по дате
-        dataToShow.sort((a, b) => new Date(a.date) - new Date(b.date));
+        this.currentData.sort((a, b) => new Date(a.date) - new Date(b.date));
         
-        // Добавляем заголовок
-        if (this.currentSemester) {
-            const semesterNumber = this.currentSemester.replace('semester', '');
-            resultsContainer.insertAdjacentHTML('beforeend', `<h4 class="mt-3">Семестр ${semesterNumber}</h4>`);
-        }
-        
-        // Рендерим результаты
-        dataToShow.forEach(item => {
+        // Рендерим
+        this.currentData.forEach(item => {
             const semesterItem = new SemesterItemComponent(resultsContainer);
             semesterItem.render(item);
         });
@@ -212,11 +264,12 @@ export class SessionResultsPage {
         this.parent.innerHTML = '';
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
-    
+
         const backButton = new BackButtonComponent(this.pageRoot);
         backButton.render(this.clickBack.bind(this));
-    
-        this.renderSemesterFilter(); 
+
+        this.renderSemesterFilter();
+        this.renderControls();
         this.renderStatistics();
         this.renderResults();
     }

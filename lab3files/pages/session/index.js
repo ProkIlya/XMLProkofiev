@@ -1,8 +1,6 @@
 import {BackButtonComponent} from "../../components/back-button/index.js";
 import {MainPage} from "../main/index.js";
 import {SessionItemComponent} from "../../components/session-item/index.js";
-import { isPalindrome } from "../../utils/functions.js";
-
 export class SessionPage {
     constructor(parent) {
         this.parent = parent;
@@ -177,7 +175,6 @@ export class SessionPage {
             <div id="session-page">
                 <h2 class="my-4">Сессии</h2>
                 <div class="mb-4" id="semester-filter"></div>
-                <div class="mb-4" id="palindrome-checker"></div>
                 <div id="session-stats" class="mb-4"></div>
                 <div id="session-results"></div>
             </div>
@@ -321,7 +318,6 @@ export class SessionPage {
         backButton.render(this.clickBack.bind(this));
 
         this.renderSemesterFilter();
-        this.renderPalindromeChecker();
         this.renderStatistics();
         this.renderResults();
     }
