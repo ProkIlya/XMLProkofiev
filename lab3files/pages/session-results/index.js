@@ -1,7 +1,7 @@
 import {BackButtonComponent} from "../../components/back-button/index.js";
 import {MainPage} from "../main/index.js";
 import {SemesterItemComponent} from "../../components/semester-item/index.js";
-import { sumUnique } from "../../utils/functions.js";
+
 
 export class SessionResultsPage {
     constructor(parent) {

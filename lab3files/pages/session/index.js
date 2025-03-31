@@ -218,32 +218,6 @@ export class SessionPage {
         });
     }
 
-    renderPalindromeChecker() {
-        const container = document.getElementById('palindrome-checker');
-        container.innerHTML = `
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Проверка палиндрома</h5>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="palindrome-input" placeholder="Введите строку">
-                        <button class="btn btn-primary" id="check-palindrome">Проверить</button>
-                    </div>
-                    <div id="palindrome-result"></div>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('check-palindrome').addEventListener('click', () => {
-            const input = document.getElementById('palindrome-input').value;
-            const result = isPalindrome(input);
-            document.getElementById('palindrome-result').innerHTML = `
-                <div class="alert alert-${result ? 'success' : 'danger'}">
-                    "${input}" - ${result ? 'палиндром' : 'не палиндром'}
-                </div>
-            `;
-        });
-    }
-
     renderStatistics() {
         const statsContainer = document.getElementById('session-stats');
         
