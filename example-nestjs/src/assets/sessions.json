@@ -1,0 +1,37 @@
+{
+  "sessionResults": {
+    "semester1": [
+      {
+        "id": 1,
+        "semester": "semester1",
+        "discipline": "Математический анализ",
+        "grade": 5,
+        "teacher": "Новый Преподаватель",
+        "date": "2024-01-18"
+      }
+    ],
+    "semester2": [
+      {
+        "discipline": "Новый предмет",
+        "grade": 3,
+        "teacher": "Иванов А.А.",
+        "date": "2025-01-13",
+        "id": 2,
+        "semester": "semester2"
+      }
+    ]
+  },
+  "sessionItems": {
+    "semester1": [
+      {
+        "id": 1,
+        "semester": "semester1",
+        "date": "2024-01-18",
+        "discipline": "Математический анализ",
+        "type": "Экзамен",
+        "room": "404",
+        "result": "Сдано (5)"
+      }
+    ]
+  }
+}
