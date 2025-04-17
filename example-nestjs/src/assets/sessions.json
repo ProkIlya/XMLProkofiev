@@ -5,17 +5,17 @@
         "id": 1,
         "semester": "semester1",
         "discipline": "Математический анализ",
-        "grade": 5,
-        "teacher": "Новый Преподаватель",
+        "grade": 3,
+        "teacher": "Келдыш Е.П.",
         "date": "2024-01-18"
       }
     ],
     "semester2": [
       {
-        "discipline": "Новый предмет",
-        "grade": 3,
+        "discipline": "Физика",
+        "grade": 4,
         "teacher": "Иванов А.А.",
-        "date": "2025-01-13",
+        "date": "2024-01-20",
         "id": 2,
         "semester": "semester2"
       }
