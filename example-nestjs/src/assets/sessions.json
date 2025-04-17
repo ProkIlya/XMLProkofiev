@@ -1,37 +1,32 @@
 {
-  "sessionResults": {
-    "semester1": [
-      {
-        "id": 1,
-        "semester": "semester1",
-        "discipline": "Математический анализ",
-        "grade": 3,
-        "teacher": "Челомей",
-        "date": "2024-01-18"
-      }
-    ],
-    "semester2": [
-      {
-        "discipline": "Физика",
-        "grade": 4,
-        "teacher": "Иванов А.А.",
-        "date": "2024-01-20",
-        "id": 2,
-        "semester": "semester2"
-      }
-    ]
-  },
-  "sessionItems": {
-    "semester1": [
-      {
-        "id": 1,
-        "semester": "semester1",
-        "date": "2024-01-18",
-        "discipline": "Математический анализ",
-        "type": "Экзамен",
-        "room": "404",
-        "result": "Сдано (5)"
-      }
-    ]
-  }
+  "exams": [
+    {
+      "id": 1,
+      "discipline": "Математический анализ",
+      "department": "ФН12",
+      "imageUrl": "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_66d08cc67c699b45844c1de0_66d09d6c6b3e0d4d2c7432a0/scale_1200",
+      "date": "2024-01-18",
+      "groupGrades": [
+        4,
+        3,
+        5,
+        4,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "discipline": "Физика",
+      "department": "ФН2",
+      "imageUrl": "https://frankfurt.apollo.olxcdn.com/v1/files/1o2ra070v5jx2-UZ/image;s=1000x562",
+      "date": "2024-06-20",
+      "groupGrades": [
+        3,
+        4,
+        4,
+        3,
+        4
+      ]
+    }
+  ]
 }

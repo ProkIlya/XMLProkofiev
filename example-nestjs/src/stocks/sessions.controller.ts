@@ -1,75 +1,34 @@
 import { Controller, Get, Post, Patch, Delete, Param, Query, Body } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
-import { CreateSessionResultDto } from './dto/create-session-result.dto';
-import { UpdateSessionResultDto } from './dto/update-session-result.dto';
-import { CreateSessionItemDto } from './dto/create-session-item.dto';
-import { UpdateSessionItemDto } from './dto/update-session-item.dto';
+import { CreateExamDto } from './dto/create-exam.dto';
+import { UpdateExamDto } from './dto/update-exam.dto';
 
-@Controller('sessions')
+@Controller('exams')
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 
-  // ================== SessionResults ==================
-  @Get('results')
-  getResults(@Query('semester') semester?: string) {
-    return this.sessionsService.getResults(semester);
+  @Get()
+  getAll(@Query('search') search?: string) {
+    return this.sessionsService.getAll(search);
   }
 
-  @Get('results/:id')
-  getResultById(@Param('id') id: string) {
-    return this.sessionsService.findResultById(+id);
+  @Get(':id')
+  getById(@Param('id') id: string) {
+    return this.sessionsService.getById(+id);
   }
 
-  @Post('results/:semester')
-  addResult(
-    @Param('semester') semester: string,
-    @Body() dto: CreateSessionResultDto,
-  ) {
-    return this.sessionsService.addResult(semester, dto);
+  @Post()
+  create(@Body() dto: CreateExamDto) {
+    return this.sessionsService.create(dto);
   }
 
-  @Patch('results/:id')
-  updateResult(
-    @Param('id') id: string,
-    @Body() dto: UpdateSessionResultDto,
-  ) {
-    return this.sessionsService.updateResult(+id, dto);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateExamDto) {
+    return this.sessionsService.update(+id, dto);
   }
 
-  @Delete('results/:id')
-  deleteResult(@Param('id') id: string) {
-    return this.sessionsService.deleteResult(+id);
-  }
-
-  // ================== SessionItems ==================
-  @Get('items')
-  getItems(@Query('semester') semester?: string) {
-    return this.sessionsService.getItems(semester);
-  }
-
-  @Get('items/:id')
-  getItemById(@Param('id') id: string) {
-    return this.sessionsService.findItemById(+id);
-  }
-
-  @Post('items/:semester')
-  addItem(
-    @Param('semester') semester: string,
-    @Body() dto: CreateSessionItemDto,
-  ) {
-    return this.sessionsService.addItem(semester, dto);
-  }
-
-  @Patch('items/:id')
-  updateItem(
-    @Param('id') id: string,
-    @Body() dto: UpdateSessionItemDto,
-  ) {
-    return this.sessionsService.updateItem(+id, dto);
-  }
-
-  @Delete('items/:id')
-  deleteItem(@Param('id') id: string) {
-    return this.sessionsService.deleteItem(+id);
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.sessionsService.delete(+id);
   }
 }

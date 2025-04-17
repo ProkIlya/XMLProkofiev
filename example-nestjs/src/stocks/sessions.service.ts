@@ -1,132 +1,62 @@
 import { Injectable } from '@nestjs/common';
 import { FileService } from './file.service';
-import { CreateSessionResultDto } from './dto/create-session-result.dto';
-import { UpdateSessionResultDto } from './dto/update-session-result.dto';
-import { CreateSessionItemDto } from './dto/create-session-item.dto';
-import { UpdateSessionItemDto } from './dto/update-session-item.dto';
-import { SessionResult } from './entities/session-result.entity';
-import { SessionItem } from './entities/session-item.entity';
+import { CreateExamDto } from './dto/create-exam.dto';
+import { UpdateExamDto } from './dto/update-exam.dto';
+import { Exam } from './entities/exam.entity';
 
-interface SessionData {
-  sessionResults: Record<string, SessionResult[]>;
-  sessionItems: Record<string, SessionItem[]>;
+interface ExamsData {
+  exams: Exam[];
 }
 
 @Injectable()
 export class SessionsService {
-  constructor(private fileService: FileService<SessionData>) {}
+  constructor(private fileService: FileService<ExamsData>) {}
 
-  // ======== SessionResults ========
-  private getNextResultId(data: SessionData): number {
-    const allResults = Object.values(data.sessionResults).flat();
-    return allResults.length > 0 ? Math.max(...allResults.map(item => item.id)) + 1 : 1;
+  private getNextId(data: ExamsData): number {
+    return data.exams.length > 0 ? Math.max(...data.exams.map(item => item.id)) + 1 : 1;
   }
 
-  getResults(semester?: string): SessionResult[] {
+  getAll(search?: string): Exam[] {
     const data = this.fileService.read();
-    return semester
-      ? data.sessionResults[semester] || []
-      : Object.values(data.sessionResults).flat();
+    if (!search) return data.exams;
+    
+    const searchLower = search.toLowerCase();
+    return data.exams.filter(exam => 
+      exam.discipline.toLowerCase().includes(searchLower) ||
+      exam.department.toLowerCase().includes(searchLower)
+    );
   }
 
-  findResultById(id: number): SessionResult | null {
+  getById(id: number): Exam | null {
     const data = this.fileService.read();
-    const allResults = Object.values(data.sessionResults).flat();
-    return allResults.find(item => item.id === id) || null;
+    return data.exams.find(item => item.id === id) || null;
   }
 
-  addResult(semester: string, dto: CreateSessionResultDto): SessionResult {
+  create(dto: CreateExamDto): Exam {
     const data = this.fileService.read();
-    const newResult = {
+    const newExam = {
       ...dto,
-      id: this.getNextResultId(data),
-      semester, // Добавляем семестр в запись
+      id: this.getNextId(data),
     };
-    data.sessionResults[semester] = [...(data.sessionResults[semester] || []), newResult];
+    data.exams.push(newExam);
     this.fileService.write(data);
-    return newResult;
+    return newExam;
   }
 
-  updateResult(id: number, dto: UpdateSessionResultDto): void {
+  update(id: number, dto: UpdateExamDto): Exam {
     const data = this.fileService.read();
-    for (const semester in data.sessionResults) {
-      const index = data.sessionResults[semester].findIndex(item => item.id === id);
-      if (index !== -1) {
-        data.sessionResults[semester][index] = {
-          ...data.sessionResults[semester][index],
-          ...dto,
-        };
-        this.fileService.write(data);
-        return;
-      }
+    const index = data.exams.findIndex(item => item.id === id);
+    if (index === -1) {
+      throw new Error(`Exam with id ${id} not found`);
     }
-    throw new Error(`SessionResult with id ${id} not found`);
-  }
-
-  deleteResult(id: number): void {
-    const data = this.fileService.read();
-    for (const semester in data.sessionResults) {
-      data.sessionResults[semester] = data.sessionResults[semester].filter(
-        item => item.id !== id,
-      );
-    }
+    data.exams[index] = { ...data.exams[index], ...dto };
     this.fileService.write(data);
+    return data.exams[index];
   }
 
-  // ======== SessionItems ========
-  private getNextItemId(data: SessionData): number {
-    const allItems = Object.values(data.sessionItems).flat();
-    return allItems.length > 0 ? Math.max(...allItems.map(item => item.id)) + 1 : 1;
-  }
-
-  getItems(semester?: string): SessionItem[] {
+  delete(id: number): void {
     const data = this.fileService.read();
-    return semester
-      ? data.sessionItems[semester] || []
-      : Object.values(data.sessionItems).flat();
-  }
-
-  findItemById(id: number): SessionItem | null {
-    const data = this.fileService.read();
-    const allItems = Object.values(data.sessionItems).flat();
-    return allItems.find(item => item.id === id) || null;
-  }
-
-  addItem(semester: string, dto: CreateSessionItemDto): SessionItem {
-    const data = this.fileService.read();
-    const newItem = {
-      ...dto,
-      id: this.getNextItemId(data),
-      semester, // Добавляем семестр в запись
-    };
-    data.sessionItems[semester] = [...(data.sessionItems[semester] || []), newItem];
-    this.fileService.write(data);
-    return newItem;
-  }
-
-  updateItem(id: number, dto: UpdateSessionItemDto): void {
-    const data = this.fileService.read();
-    for (const semester in data.sessionItems) {
-      const index = data.sessionItems[semester].findIndex(item => item.id === id);
-      if (index !== -1) {
-        data.sessionItems[semester][index] = {
-          ...data.sessionItems[semester][index],
-          ...dto,
-        };
-        this.fileService.write(data);
-        return;
-      }
-    }
-    throw new Error(`SessionItem with id ${id} not found`);
-  }
-
-  deleteItem(id: number): void {
-    const data = this.fileService.read();
-    for (const semester in data.sessionItems) {
-      data.sessionItems[semester] = data.sessionItems[semester].filter(
-        item => item.id !== id,
-      );
-    }
+    data.exams = data.exams.filter(item => item.id !== id);
     this.fileService.write(data);
   }
 }
