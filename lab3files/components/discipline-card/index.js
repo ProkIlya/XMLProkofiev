@@ -5,14 +5,21 @@ export class DisciplineCardComponent {
     
     getHTML(data) {
         return `
-            <div class="col-md-12 mb-4 card-container" data-title="${data.title.toLowerCase()}">
-                <div class="card h-100">
+            <div class="card-container mb-4" data-title="${data.discipline.toLowerCase()}">
+                <div class="card" style="width: 24rem;">
+                    <img src="${data.imageUrl}" class="card-img-top" 
+                         style="height: 200px; object-fit: cover; width: 100%;"
+                         alt="${data.discipline}">
                     <div class="card-body">
-                        <h5 class="card-title">${data.title}</h5>
-                        <p class="card-text">${data.text}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-primary" id="click-card-${data.id}" data-id="${data.id}">Подробнее</button>
-                            <button class="btn btn-danger delete-btn" data-id="${data.id}">Удалить</button>
+                        <h5 class="card-title">${data.discipline}</h5>
+                        <p class="card-text">Кафедра: ${data.department}</p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-primary" id="click-card-${data.id}" data-id="${data.id}">
+                                Подробнее
+                            </button>
+                            <button class="btn btn-danger delete-btn" data-id="${data.id}">
+                                Удалить
+                            </button>
                         </div>
                     </div>
                 </div>
