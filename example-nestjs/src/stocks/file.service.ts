@@ -7,7 +7,10 @@ export class FileService<T> {
   private readonly filePath: string;
 
   constructor(filePath: string) {
-    this.filePath = path.join(__dirname, '..', 'assets', filePath);
+    const basePath = fs.existsSync(path.join(__dirname, '..', 'src'))
+    ? path.join(__dirname, '..', 'src', 'assets')
+    : path.join(__dirname, '..', 'assets');
+    this.filePath = path.join(basePath, filePath);
   }
 
   read(): T {
