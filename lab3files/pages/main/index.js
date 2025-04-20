@@ -20,11 +20,17 @@ export class MainPage {
 
     loadExams(search = '') {
         const url = search ? examUrls.searchExams(search) : examUrls.getExams();
-        ajax.get(url, (data) => {
+        ajax.get(url, (data, status) => {
+          if (status === 'success' && data) {
             this.examsData = data;
             this.renderCards();
+          } else {
+            console.error('Ошибка загрузки данных:', status);
+            this.examsData = []; // Запасной вариант
+            this.renderCards(); // Отрисовать пустой список
+          }
         });
-    }
+      }
 
     showDetails(e) {
         const cardId = parseInt(e.target.dataset.id);
