@@ -17,9 +17,14 @@ export class DisciplineCardComponent {
                             <button class="btn btn-primary" id="click-card-${data.id}" data-id="${data.id}">
                                 Подробнее
                             </button>
-                            <button class="btn btn-danger delete-btn" data-id="${data.id}">
-                                Удалить
-                            </button>
+                            <div>
+                                <button class="btn btn-warning me-2" id="edit-card-${data.id}" data-id="${data.id}">
+                                    Редактировать
+                                </button>
+                                <button class="btn btn-danger" id="delete-card-${data.id}" data-id="${data.id}">
+                                    Удалить
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -29,7 +34,8 @@ export class DisciplineCardComponent {
 
     addListeners(data, listeners) {
         document.getElementById(`click-card-${data.id}`).addEventListener("click", listeners.details);
-        document.querySelector(`[data-id="${data.id}"].delete-btn`).addEventListener("click", listeners.delete);
+        document.getElementById(`edit-card-${data.id}`).addEventListener("click", listeners.edit);
+        document.getElementById(`delete-card-${data.id}`).addEventListener("click", listeners.delete);
     }
 
     render(data, listeners) {
