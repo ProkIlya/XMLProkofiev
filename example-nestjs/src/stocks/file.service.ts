@@ -7,7 +7,7 @@ export class FileService<T> {
   private readonly filePath: string;
 
   constructor(filePath: string) {
-    this.filePath = path.join(__dirname, '..', '..', 'src', 'assets', filePath);
+    this.filePath = path.join(__dirname, '..', 'assets', filePath);
   }
 
   read(): T {
