@@ -18,19 +18,23 @@ export class MainPage {
         return document.getElementById('main-page');
     }
 
-    loadExams(search = '') {
+    async loadExams(search = '') {
         const url = search ? examUrls.searchExams(search) : examUrls.getExams();
-        ajax.get(url, (data, status) => {
-          if (status === 'success' && data) {
-            this.examsData = data;
+        try {
+            const data = await ajax.get(url);
+            if (data) {
+                this.examsData = data;
+                this.renderCards();
+            } else {
+                this.examsData = [];
+                this.renderCards();
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки данных:', error);
+            this.examsData = [];
             this.renderCards();
-          } else {
-            console.error('Ошибка загрузки данных:', status);
-            this.examsData = []; // Запасной вариант
-            this.renderCards(); // Отрисовать пустой список
-          }
-        });
-      }
+        }
+    }
 
     showDetails(e) {
         const cardId = parseInt(e.target.dataset.id);
@@ -52,12 +56,15 @@ export class MainPage {
         }
     }
 
-    handleDeleteCard(e) {
+    async handleDeleteCard(e) {
         const cardId = parseInt(e.target.dataset.id);
         if (confirm('Вы уверены, что хотите удалить эту карточку?')) {
-            ajax.delete(examUrls.removeExamById(cardId), () => {
-                this.loadExams();
-            });
+            try {
+                await ajax.delete(examUrls.removeExamById(cardId));
+                await this.loadExams();
+            } catch (error) {
+                console.error('Ошибка при удалении:', error);
+            }
         }
     }
 

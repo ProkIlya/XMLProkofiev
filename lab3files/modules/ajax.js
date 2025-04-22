@@ -1,64 +1,71 @@
 class Ajax {
-    get(url, callback) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
-      xhr.withCredentials = true;
-      xhr.send();
-  
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          this._handleResponse(xhr, callback);
+  async get(url) {
+    try {
+      const response = await fetch(url, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json'
         }
-      };
-    }
-  
-    post(url, data, callback) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', url);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.withCredentials = true;
-      xhr.send(JSON.stringify(data));
-  
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          this._handleResponse(xhr, callback);
-        }
-      };
-    }
-  
-    patch(url, data, callback) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('PATCH', url);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.withCredentials = true;
-      xhr.send(JSON.stringify(data));
-  
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          this._handleResponse(xhr, callback);
-        }
-      };
-    }
-  
-    delete(url, callback) {
-      const xhr = new XMLHttpRequest();
-      xhr.open('DELETE', url);
-      xhr.withCredentials = true;
-      xhr.send();
-  
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          this._handleResponse(xhr, callback);
-        }
-      };
-    }
-  
-    _handleResponse(xhr, callback) {
-      if (xhr.status === 200) {
-        callback(JSON.parse(xhr.responseText), 'success');
-      } else {
-        callback(null, 'error');
-      }
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error('GET Error:', error);
+      return null;
     }
   }
-  export const ajax = new Ajax();
+
+  async post(url, data) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error('POST Error:', error);
+      return null;
+    }
+  }
+
+  async patch(url, data) {
+    try {
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error('PATCH Error:', error);
+      return null;
+    }
+  }
+
+  async delete(url) {
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      console.error('DELETE Error:', error);
+      return null;
+    }
+  }
+}
+
+export const ajax = new Ajax();

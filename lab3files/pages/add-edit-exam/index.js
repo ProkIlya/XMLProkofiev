@@ -43,38 +43,28 @@ export class AddEditExamPage {
     `;
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     
     const formData = {
-      discipline: document.getElementById('discipline').value,
-      department: document.getElementById('department').value,
-      imageUrl: document.getElementById('imageUrl').value,
-      date: document.getElementById('date').value,
-      groupGrades: this.examData?.groupGrades || [3, 3, 3, 3, 3]
+        discipline: document.getElementById('discipline').value,
+        department: document.getElementById('department').value,
+        imageUrl: document.getElementById('imageUrl').value,
+        date: document.getElementById('date').value,
+        groupGrades: this.examData?.groupGrades || [3, 3, 3, 3, 3]
     };
 
-    if (this.isEditMode) {
-      this.updateExam(formData);
-    } else {
-      this.createExam(formData);
+    try {
+        if (this.isEditMode) {
+            await ajax.patch(examUrls.updateExamById(this.examData.id), formData);
+        } else {
+            await ajax.post(examUrls.createExam(), formData);
+        }
+        this.returnToMain();
+    } catch (error) {
+        console.error('Ошибка при сохранении:', error);
+        alert('Произошла ошибка при сохранении данных');
     }
-  }
-
-  createExam(data) {
-    ajax.post(examUrls.createExam(), data, (response) => {
-      if (response) {
-        this.returnToMain();
-      }
-    });
-  }
-
-  updateExam(data) {
-    ajax.patch(examUrls.updateExamById(this.examData.id), data, (response) => {
-      if (response) {
-        this.returnToMain();
-      }
-    });
   }
 
   returnToMain() {
