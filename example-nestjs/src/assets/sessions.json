@@ -27,20 +27,6 @@
         3,
         4
       ]
-    },
-    {
-      "discipline": "Основы программирования",
-      "department": "ИУ5",
-      "imageUrl": "https://repository-images.githubusercontent.com/605775853/fea1845d-8cc0-4902-8d3f-07dd860581a7",
-      "date": "2024-01-15",
-      "groupGrades": [
-        5,
-        4,
-        5,
-        4,
-        5
-      ],
-      "id": 3
     }
   ]
 }
