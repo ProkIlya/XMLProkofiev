@@ -1,0 +1,32 @@
+{
+  "exams": [
+    {
+      "id": 1,
+      "discipline": "Математический анализ",
+      "department": "ФН12",
+      "imageUrl": "https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_66d08cc67c699b45844c1de0_66d09d6c6b3e0d4d2c7432a0/scale_1200",
+      "date": "2024-01-18",
+      "groupGrades": [
+        4,
+        3,
+        5,
+        4,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "discipline": "Физика",
+      "department": "ФН2",
+      "imageUrl": "https://frankfurt.apollo.olxcdn.com/v1/files/1o2ra070v5jx2-UZ/image;s=1000x562",
+      "date": "2024-06-20",
+      "groupGrades": [
+        3,
+        4,
+        4,
+        3,
+        4
+      ]
+    }
+  ]
+}
