@@ -1,21 +1,22 @@
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './lab3files/src/main.js',
+  entry: './main.js', 
   output: {
+    path: path.resolve(__dirname, '../Lab4/example-nestjs/public'), // Путь относительно lab3files
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../Lab4/example-nestjs/public'),
   },
   plugins: [
     new CopyPlugin({
       patterns: [
         { 
-          from: 'lab3files/index.html', 
-          to: '../Lab4/example-nestjs/public/index.html' 
+          from: 'index.html', 
+          to: path.resolve(__dirname, '../Lab4/example-nestjs/public/index.html') // Путь до lab4
         }
       ]
     })
   ],
-  mode: 'production'
+  mode: 'development' // или 'production' в production-среде
 };
+
