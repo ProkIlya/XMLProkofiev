@@ -32,43 +32,15 @@
       "discipline": "Основы программирования",
       "department": "ИУ5",
       "imageUrl": "https://repository-images.githubusercontent.com/605775853/fea1845d-8cc0-4902-8d3f-07dd860581a7",
-      "date": "2024-01-15",
+      "date": "2025-04-04",
       "groupGrades": [
-        5,
-        4,
-        5,
-        4,
-        5
+        3,
+        3,
+        3,
+        3,
+        3
       ],
       "id": 3
-    },
-    {
-      "discipline": "Основы программирования",
-      "department": "ИУ5",
-      "imageUrl": "https://repository-images.githubusercontent.com/605775853/fea1845d-8cc0-4902-8d3f-07dd860581a7",
-      "date": "2024-01-15",
-      "groupGrades": [
-        5,
-        5,
-        5,
-        5,
-        5
-      ],
-      "id": 4
-    },
-    {
-      "discipline": "Основы программирования",
-      "department": "ИУ5",
-      "imageUrl": "https://repository-images.githubusercontent.com/605775853/fea1845d-8cc0-4902-8d3f-07dd860581a7",
-      "date": "2024-01-15",
-      "groupGrades": [
-        5,
-        5,
-        5,
-        5,
-        5
-      ],
-      "id": 5
     }
   ]
 }
