@@ -1,6 +1,6 @@
 class ExamUrls {
     constructor() {
-      this.baseUrl = 'http://localhost:3000';
+      this.baseUrl = 'http://localhost:3001';
     }
     getExams() {
       return `${this.baseUrl}/exams`;
